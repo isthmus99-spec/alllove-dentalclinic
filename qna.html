@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>치과 Q&A | 모두애치과</title>
+<meta name="description" content="모두애치과 원장이 직접 답하는 치과 Q&A. 임플란트, 교정, 소아치과 등 궁금한 점을 확인하세요.">
+<meta name="robots" content="index, follow">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- ============================
+     Firebase (무료 DB) — 반드시 아래 CONFIG를 본인 프로젝트 값으로 교체하세요
+=============================== -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  // ▼▼▼ 여기에 본인 Firebase 프로젝트 설정값을 붙여넣으세요 (admin.html과 동일해야 합니다) ▼▼▼
+  const firebaseConfig = {
+    apiKey: "AIzaSyAr9wNqMfy15t6wAeuU7FKw76aLVYkRnf8",
+    authDomain: "alllove-dentalclinic.firebaseapp.com",
+    projectId: "alllove-dentalclinic",
+    storageBucket: "alllove-dentalclinic.firebasestorage.app",
+    messagingSenderId: "761187956648",
+    appId: "1:761187956648:web:26ad24bfe9f5a282308f9d"
+  };
+  // ▲▲▲ 여기까지 ▲▲▲
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal-deep: #0B4F6C;
+    --teal-mid: #1A7A9A;
+    --teal-light: #D6EEF5;
+    --teal-pale: #EEF7FA;
+    --ivory: #F8F6F1;
+    --charcoal: #1E2A32;
+    --gray-warm: #6B7280;
+    --white: #ffffff;
+    --gold: #C09E5E;
+    --serif: 'Noto Serif KR', serif;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    color: var(--charcoal);
+    background: var(--ivory);
+    line-height: 1.7;
+  }
+
+  nav {
+    position: sticky;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.96);
+    border-bottom: 1px solid rgba(11,79,108,0.1);
+    backdrop-filter: blur(8px);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 26px;
+    color: var(--teal-deep);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .nav-back {
+    font-size: 14px;
+    color: var(--teal-mid);
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-back:hover { color: var(--teal-deep); }
+
+  .page-header {
+    padding: 64px 24px 40px;
+    text-align: center;
+    background: linear-gradient(135deg, var(--teal-pale) 0%, var(--ivory) 100%);
+  }
+
+  .page-eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: var(--teal-mid);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .page-title {
+    font-family: var(--serif);
+    font-size: 40px;
+    color: var(--teal-deep);
+    margin-bottom: 14px;
+  }
+
+  .page-desc {
+    color: var(--gray-warm);
+    font-size: 15px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 24px 100px;
+  }
+
+  /* Category filter */
+  .filter-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .filter-chip {
+    border: 1px solid rgba(11,79,108,0.2);
+    background: var(--white);
+    color: var(--teal-deep);
+    padding: 7px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-chip.active, .filter-chip:hover {
+    background: var(--teal-deep);
+    color: var(--white);
+    border-color: var(--teal-deep);
+  }
+
+  /* List */
+  .qna-list { display: flex; flex-direction: column; gap: 14px; }
+
+  .qna-item {
+    background: var(--white);
+    border: 1px solid rgba(11,79,108,0.08);
+    border-radius: 14px;
+    padding: 22px 26px;
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .qna-item:hover {
+    box-shadow: 0 8px 24px rgba(11,79,108,0.1);
+    transform: translateY(-2px);
+  }
+
+  .qna-item-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .qna-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--teal-mid);
+    background: var(--teal-pale);
+    padding: 3px 10px;
+    border-radius: 10px;
+  }
+
+  .qna-date {
+    font-size: 12px;
+    color: var(--gray-warm);
+  }
+
+  .qna-q {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--charcoal);
+    display: flex;
+    gap: 8px;
+  }
+  .qna-q::before {
+    content: 'Q';
+    font-family: var(--serif);
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .empty-state, .loading-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--gray-warm);
+    font-size: 14px;
+  }
+
+  /* Detail overlay */
+  .detail-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(11,20,26,0.55);
+    padding: 40px 20px;
+    overflow-y: auto;
+  }
+  .detail-overlay.active { display: block; }
+
+  .detail-panel {
+    background: var(--white);
+    max-width: 680px;
+    margin: 0 auto;
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .detail-head {
+    background: var(--teal-deep);
+    color: var(--white);
+    padding: 32px 36px;
+    position: relative;
+  }
+
+  .detail-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .detail-badge {
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.18);
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+  }
+
+  .detail-q {
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.5;
+    display: flex;
+    gap: 10px;
+  }
+  .detail-q::before {
+    content: 'Q';
+    color: var(--gold);
+  }
+
+  .detail-body {
+    padding: 32px 36px 40px;
+  }
+
+  .detail-a {
+    display: flex;
+    gap: 10px;
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--charcoal);
+    white-space: pre-wrap;
+  }
+  .detail-a::before {
+    content: 'A';
+    font-family: var(--serif);
+    font-weight: 700;
+    color: var(--teal-mid);
+    flex-shrink: 0;
+  }
+
+  .detail-date {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--gray-warm);
+    text-align: right;
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 0 20px; }
+    .page-title { font-size: 30px; }
+    .qna-item { padding: 18px 20px; }
+    .detail-head, .detail-body { padding: 24px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">모두애치과</a>
+  <a href="index.html" class="nav-back">← 홈으로</a>
+</nav>
+
+<div class="page-header">
+  <div class="page-eyebrow">DENTAL Q&amp;A</div>
+  <h1 class="page-title">치과 Q&amp;A</h1>
+  <p class="page-desc">환자분들이 자주 궁금해하시는 내용을 원장이 직접 정리해 답변드립니다.</p>
+</div>
+
+<div class="wrap">
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-chip active" data-cat="all">전체</button>
+  </div>
+
+  <div class="qna-list" id="qnaList">
+    <div class="loading-state">불러오는 중입니다...</div>
+  </div>
+</div>
+
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetailOnBg(event)">
+  <div class="detail-panel">
+    <div class="detail-head">
+      <button class="detail-close" onclick="closeDetail()">✕</button>
+      <div class="detail-badge" id="dCat"></div>
+      <div class="detail-q" id="dTitle"></div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-a" id="dContent"></div>
+      <div class="detail-date" id="dDate"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let allPosts = [];
+let activeCat = 'all';
+
+function formatDate(ts) {
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function render() {
+  const listEl = document.getElementById('qnaList');
+  const posts = activeCat === 'all' ? allPosts : allPosts.filter(p => p.category === activeCat);
+
+  if (posts.length === 0) {
+    listEl.innerHTML = '<div class="empty-state">등록된 글이 없습니다.</div>';
+    return;
+  }
+
+  listEl.innerHTML = posts.map(p => `
+    <div class="qna-item" onclick="openDetail('${p.id}')">
+      <div class="qna-item-top">
+        <span class="qna-badge">${p.category || '일반'}</span>
+        <span class="qna-date">${formatDate(p.createdAt)}</span>
+      </div>
+      <div class="qna-q">${escapeHtml(p.title)}</div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function buildFilters() {
+  const cats = Array.from(new Set(allPosts.map(p => p.category).filter(Boolean)));
+  const bar = document.getElementById('filterBar');
+  bar.innerHTML = '<button class="filter-chip active" data-cat="all">전체</button>' +
+    cats.map(c => `<button class="filter-chip" data-cat="${c}">${c}</button>`).join('');
+  bar.querySelectorAll('.filter-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeCat = btn.getAttribute('data-cat');
+      bar.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render();
+    });
+  });
+}
+
+function openDetail(id) {
+  const p = allPosts.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('dCat').textContent = p.category || '일반';
+  document.getElementById('dTitle').textContent = p.title;
+  document.getElementById('dContent').textContent = p.content;
+  document.getElementById('dDate').textContent = formatDate(p.createdAt);
+  document.getElementById('detailOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeDetail() {
+  document.getElementById('detailOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+function closeDetailOnBg(e) {
+  if (e.target === document.getElementById('detailOverlay')) closeDetail();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+
+// Firestore에서 글 불러오기 (published 상태만, 최신순)
+db.collection('qna_posts')
+  .where('published', '==', true)
+  .orderBy('createdAt', 'desc')
+  .onSnapshot(snapshot => {
+    allPosts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    buildFilters();
+    render();
+  }, err => {
+    document.getElementById('qnaList').innerHTML =
+      '<div class="empty-state">글을 불러오지 못했습니다. (Firebase 설정을 확인해주세요)<br><span style="font-size:12px;color:#c0504a;">' + err.message + '</span></div>';
+    console.error(err);
+  });
+</script>
+
+</body>
+</html>
