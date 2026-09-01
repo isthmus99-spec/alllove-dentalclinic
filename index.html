@@ -32,45 +32,179 @@
 <meta property="og:locale" content="ko_KR">
 
 <!-- ============================
-     구조화 데이터 (JSON-LD) – 구글·네이버 지식패널
+     구조화 데이터 (JSON-LD) – 구글·네이버 지식패널 및 AI 검색(GEO) 대응
 =============================== -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Dentist",
-  "name": "모두애치과",
-  "description": "편안하게, 아름답게, 정직하게. 임플란트·교정·소아치과·미백 전문 치과의원.",
-  "url": "https://www.alllove-dentalclinic.com",
-  "telephone": "031-943-8928",
-  "email": "alllove8928@naver.com",
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "KR",
-    "addressRegion": "경기도",
-    "addressLocality": "파주시"
-  },
-  "openingHoursSpecification": [
+  "@graph": [
     {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday","Tuesday","Wednesday","Friday"],
-      "opens": "09:30",
-      "closes": "18:30"
+      "@type": "Dentist",
+      "@id": "https://www.alllove-dentalclinic.com/#organization",
+      "name": "모두애치과",
+      "alternateName": "Allove Dental Clinic",
+      "url": "https://www.alllove-dentalclinic.com/",
+      "logo": "https://www.alllove-dentalclinic.com/og-image.jpg",
+      "image": "https://www.alllove-dentalclinic.com/og-image.jpg",
+      "description": "경기도 파주시 목동동에 위치한 모두애치과는 심미치료(라미네이트·지르코니아 크라운·치아미백·잇몸성형), 치아교정(일반·투명교정), 일반진료(스케일링·잇몸치료·충치치료·신경치료), 임플란트·틀니, 소아진료(소아 검진·충치치료·홈메우기·불소도포·소아교정·장애인 진료)를 제공하는 가족 단위 치과입니다. '편안하게, 아름답게, 정직하게'를 모토로 파주 운정에서 진료하고 있습니다.",
+      "telephone": "+82-31-943-8928",
+      "email": "alllove8928@naver.com",
+      "taxID": "472-24-00351",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "교하로 75 (목동동) 신운정프라자 3차 503호",
+        "addressLocality": "파주시",
+        "addressRegion": "경기도",
+        "addressCountry": "KR"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "파주시"
+      },
+      "medicalSpecialty": "Dentistry",
+      "knowsAbout": ["임플란트", "치아교정", "투명교정", "소아치과", "심미치료", "치아미백", "스케일링", "신경치료", "틀니"],
+      "hasMap": "https://map.naver.com/v5/search/모두애치과",
+      "sameAs": [
+        "https://map.naver.com/v5/search/모두애치과",
+        "https://map.kakao.com/?q=모두애치과",
+        "https://m.booking.naver.com/booking/13/bizes/973836?theme=place&service-target=map-pc&lang=ko&area=bmp&map-search=1"
+      ],
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Thursday", "Friday"],
+          "opens": "09:30",
+          "closes": "13:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Thursday", "Friday"],
+          "opens": "14:00",
+          "closes": "18:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Wednesday",
+          "opens": "09:30",
+          "closes": "13:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Wednesday",
+          "opens": "14:00",
+          "closes": "20:00",
+          "description": "수요일 야간진료"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "09:30",
+          "closes": "14:00",
+          "description": "점심시간 없음"
+        }
+      ],
+      "employee": { "@id": "https://www.alllove-dentalclinic.com/#dr-jungyuran" },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "모두애치과 진료 항목",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "심미치료",
+            "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "라미네이트" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "지르코니아 크라운" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "치아미백" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "치아 및 잇몸성형" } }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "치아교정",
+            "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "일반 교정치료" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "투명교정" } }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "일반진료",
+            "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "스케일링" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "잇몸치료" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "충치치료" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "치경부마모증 치료" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "신경치료" } }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "임플란트·틀니",
+            "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "임플란트" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "틀니" } }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "소아진료",
+            "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "소아 검진 및 충치치료" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "치아 홈메우기" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "불소 도포" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "소아교정" } },
+              { "@type": "Offer", "itemOffered": { "@type": "MedicalProcedure", "name": "장애인 진료" } }
+            ]
+          }
+        ]
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+82-31-943-8928",
+          "email": "alllove8928@naver.com",
+          "contactType": "reservations",
+          "areaServed": "KR",
+          "availableLanguage": "Korean"
+        }
+      ]
     },
     {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Thursday"],
-      "opens": "09:30",
-      "closes": "20:00"
+      "@type": "Physician",
+      "@id": "https://www.alllove-dentalclinic.com/#dr-jungyuran",
+      "name": "정유란",
+      "jobTitle": "대표원장",
+      "medicalSpecialty": "Dentistry",
+      "hasCredential": [
+        { "@type": "EducationalOccupationalCredential", "credentialCategory": "전문의", "name": "통합치의학과 전문의" },
+        { "@type": "EducationalOccupationalCredential", "credentialCategory": "학위", "name": "임상교정치의학 석사" }
+      ],
+      "alumniOf": [
+        { "@type": "CollegeOrUniversity", "name": "원광대학교 치과대학" },
+        { "@type": "CollegeOrUniversity", "name": "연세대학교 치과대학병원(신촌)" },
+        { "@type": "CollegeOrUniversity", "name": "이화여자대학교 임상치의학대학원 임상교정치의학과" }
+      ],
+      "memberOf": { "@type": "Organization", "name": "대한치과교정학회" },
+      "worksFor": { "@id": "https://www.alllove-dentalclinic.com/#organization" }
     },
     {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Saturday"],
-      "opens": "09:00",
-      "closes": "14:00"
+      "@type": "WebSite",
+      "@id": "https://www.alllove-dentalclinic.com/#website",
+      "url": "https://www.alllove-dentalclinic.com/",
+      "name": "모두애치과",
+      "inLanguage": "ko",
+      "publisher": { "@id": "https://www.alllove-dentalclinic.com/#organization" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://www.alllove-dentalclinic.com/#webpage",
+      "url": "https://www.alllove-dentalclinic.com/",
+      "name": "모두애치과 / 파주 운정에서 온 가족이 함께 찾는 치과",
+      "isPartOf": { "@id": "https://www.alllove-dentalclinic.com/#website" },
+      "about": { "@id": "https://www.alllove-dentalclinic.com/#organization" },
+      "inLanguage": "ko"
     }
-  ],
-  "priceRange": "₩₩",
-  "medicalSpecialty": ["Dentistry", "Orthodontics", "Pediatric Dentistry"]
+  ]
 }
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
